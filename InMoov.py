@@ -1,3 +1,4 @@
+#Test GitHub
 #Importowanie modułów.
 import os
 import time
@@ -11,7 +12,7 @@ import random
 
 stop_event = threading.Event()
 
-#Określenie ilości kanałów w sterowniku serwomechanizmów. 
+#Określenie ilości kanałów w sterowniku serwomechanizmów.
 servo_kit = ServoKit(channels=16)
 
 #Definicje zmiennych.
@@ -35,7 +36,7 @@ def Głowa_pion(angle):
 
 def Komunikat_głosowy(tekst):
 
-    #Oczy w górę.   
+    #Oczy w górę.
     stop_event.clear()
 
     #Przejście do dodatkowego wątku programu.
@@ -46,15 +47,15 @@ def Komunikat_głosowy(tekst):
     os.system( 'espeak "'+tekst+'" --stdout -a 200 -s 180 -p 40 | aplay 2>/dev/null'  )
 
     stop_event.set()
-    
+
 def Aktualna_data():
-    
+
     #Odczytanie daty systemowej.
     dzień = time.localtime().tm_mday
     miesiąc = time.localtime().tm_mon
     rok = time.localtime().tm_year
 
-    #Odtworzenie komunikatu z aktualną datą.           
+    #Odtworzenie komunikatu z aktualną datą.
     if dzień == 1:
         Komunikat_głosowy("Pierwszy")
     if dzień == 2:
@@ -142,10 +143,10 @@ def Aktualna_data():
         Komunikat_głosowy("Listopad")
     if miesiąc == 12:
         Komunikat_głosowy("Grudzień")
-    
+
     #Zamiana liczby na łańcuch.
     rok = str(rok)
-            
+
     Komunikat_głosowy(rok)
 
 def Aktualny_czas():
@@ -153,8 +154,8 @@ def Aktualny_czas():
     #Odczytanie czasu systemowego.
     godziny = time.localtime().tm_hour
     minuty = time.localtime().tm_min
-            
-    #Odtworzenie komunikatu z aktualnym czasem.           
+
+    #Odtworzenie komunikatu z aktualnym czasem.
     if godziny == 1:
         Komunikat_głosowy("Pierwsza")
     if godziny == 2:
@@ -201,12 +202,12 @@ def Aktualny_czas():
         Komunikat_głosowy("Dwudziesta druga")
     if godziny == 23:
         Komunikat_głosowy("Dwudziesta trzecia")
-    if godziny == 0: 
+    if godziny == 0:
         Komunikat_głosowy("Dwudziesta czwarta")
 
     #Zamiana liczby na łańcuch.
     minuty = str(minuty)
-            
+
     Komunikat_głosowy(minuty)
 
 def Aktualna_temperatura():
@@ -220,45 +221,45 @@ def Aktualna_temperatura():
     #Odtworzenie komunikatu z aktualną temperaturą otoczenia.
     if temperatura == "1":
         Komunikat_głosowy(temperatura)
-        Komunikat_głosowy("Stopnień celsjusza") 
-    
+        Komunikat_głosowy("Stopnień celsjusza")
+
     elif temperatura == "2" or temperatura == "3" or temperatura == "4" or temperatura == "22" or temperatura == "23" or temperatura == "24" or temperatura == "32" or temperatura == "33" or temperatura == "34" or temperatura == "42" or temperatura == "43" or temperatura == "44" or temperatura == "52" or temperatura == "53" or temperatura == "54":
         Komunikat_głosowy(temperatura)
         Komunikat_głosowy("Stopnie celsjusza")
-        
+
     else:
         Komunikat_głosowy(temperatura)
-        Komunikat_głosowy("Stopni celsjusza")  
+        Komunikat_głosowy("Stopni celsjusza")
 
 #Definicja fukcji dodatkowego wątku programu.
 def Ruch_szczęką():
     while True:
-        
+
         #W zależności od wylosowanej liczby czas pomiędzy poszczególnymi ruchami szczęki będzie się różnił.
         opóźnienie = random.randint(1, 3)
-        
-        #Czasy pomiędzy poszczególnymi ruchami szczęki.         
+
+        #Czasy pomiędzy poszczególnymi ruchami szczęki.
         opóźnienie_1 = 0.07
         opóźnienie_2 = 0.14
         opóźnienie_3 = 0.21
-        
+
         #Szczęka otwarta.
         Szczęka(35)
         #Oczy_poziom(-5)
         #Oczy_pion(-5)
-        
+
         if opóźnienie == 1:
             sleep(opóźnienie_1)
         elif opóźnienie == 2:
             sleep(opóźnienie_2)
         elif opóźnienie == 3:
             sleep(opóźnienie_3)
-        
+
         #Szczęka przymknięta.
         Szczęka(10)
         #Oczy_poziom(5)
         #Oczy_pion(5)
-        
+
         if opóźnienie == 1:
             sleep(opóźnienie_1)
         elif opóźnienie == 2:
@@ -270,24 +271,24 @@ def Ruch_szczęką():
         Szczęka(-10)
         #Oczy_poziom(0)
         #Oczy_pion(0)
-        
+
         if opóźnienie == 1:
             sleep(opóźnienie_1)
         elif opóźnienie == 2:
             sleep(opóźnienie_2)
         elif opóźnienie == 3:
             sleep(opóźnienie_3)
-        
+
         if stop_event.is_set():
             break
-        
+
 #Wstępne pozycje serwomechanizmów.
 Oczy_poziom(0)
 Oczy_pion(0)
 Szczęka(-10)
 Głowa_poziom(-5)
 Głowa_pion(0)
-                   
+
 while True:
 
     #Algorytm rozpoznawania mowy.
@@ -297,7 +298,7 @@ while True:
         try:
             print("Proszę o wydanie polecenia")
             wypowiedziane_słowo = r.listen(źródło_dźwięku)
-            print("Przetwarzam ...")         
+            print("Przetwarzam ...")
             print("Wydane polecenie: \n" + r.recognize_google(wypowiedziane_słowo, language="pl-PL"))
         except sr.UnknownValueError:
             print("Nie zrozumiałem polocenia, proszę o powtórzenie")
@@ -307,9 +308,9 @@ while True:
 
     #Zamiana wszystkich znaków łańcucha na małe litery.
     polecenie = polecenie.lower()
-                                
+
     if pomocnicza_1 == 1:
-       
+
         #Asystent o sobie.
         if polecenie == "przedstaw się":
             Komunikat_głosowy("Nazywam się inmoov, jestem asystentem cyfrowym")
@@ -324,8 +325,8 @@ while True:
 
         elif polecenie == "jaki jest twój ulubiony kolor":
             Komunikat_głosowy("Mój ulubiony kolor to biały")
-            
-        #Polecenia różne.    
+
+        #Polecenia różne.
         elif polecenie == "podaj datę":
             Komunikat_głosowy("Aktualna data")
             Aktualna_data()
@@ -339,19 +340,19 @@ while True:
         elif polecenie == "podaj temperaturę":
             Komunikat_głosowy("Aktualna temperatura")
             Aktualna_temperatura()
-            pomocnicza_1 = 0            
+            pomocnicza_1 = 0
 
         elif polecenie == "zrób zdjęcie":
             Komunikat_głosowy("Za trzy sekundy zostanie zrobione zdjęcie")
             sleep(3)
             camera = PiCamera()
             camera.start_preview()
-            camera.capture('/home/pi/Desktop/Zdjęcia InMoov/Zdjęcie' +' '+ str(time.localtime().tm_mday) +'_'+ str(time.localtime().tm_mon) +'_'+ str(time.localtime().tm_year) +' '+ str(time.localtime().tm_hour) +'_'+ str(time.localtime().tm_min) + '.jpg')            
+            camera.capture('/home/pi/Desktop/Zdjęcia InMoov/Zdjęcie' +' '+ str(time.localtime().tm_mday) +'_'+ str(time.localtime().tm_mon) +'_'+ str(time.localtime().tm_year) +' '+ str(time.localtime().tm_hour) +'_'+ str(time.localtime().tm_min) + '.jpg')
             camera.stop_preview()
             camera.close()
             Komunikat_głosowy("Zdjęcie zostało wykonane i zapisane w odpowiednim folderze")
             pomocnicza_1 = 0
-            
+
         #Motywacyjne cytaty.
         elif polecenie == "podaj cytat o wytrwałości":
             Komunikat_głosowy("Nic na świecie nie zastąpi wytrwałości. Nie zastąpi jej talent, nie ma nic powszechniejszego niż ludzie utalentowani, którzy nie odnoszą sukcesów. Nie uczyni niczego sam geniusz, nienagradzany geniusz to już prawie przysłowie. Nie uczyni niczego też samo wykształcenie, świat jest pełen ludzi wykształconych, o których zapowniano. Tylko wytrwałość i determinacja są wszechmocne")
@@ -361,16 +362,16 @@ while True:
         elif polecenie == "asystencie":
             Komunikat_głosowy("Oczekuję na polecenie")
             polecenie = ""
-                             
-        #Jeżeli asystent cyfrowy nie rozpozna polecenia, poprosi o jego powtórzenie.                                                               
+
+        #Jeżeli asystent cyfrowy nie rozpozna polecenia, poprosi o jego powtórzenie.
         else:
             Komunikat_głosowy("Nie zrozumiałem polocenia, proszę o powtórzenie")
-            
+
     #Ustawienie zmiennej ,,pomocnicza_1'', dopiero wtedy możliwe jest wykonanie innych poleceń.
     if  polecenie == "asystencie":
         Komunikat_głosowy("Oczekuję na polecenie")
         pomocnicza_1 = 1
-        
+
     polecenie = ""
 
 
